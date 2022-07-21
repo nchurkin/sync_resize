@@ -90,6 +90,7 @@ def determine_actions(source_files: Iterable[Path], dest_files: Iterable[Path],
 if __name__ == '__main__':
     start_time = time.time()
 
+    os.makedirs(os.path.dirname("./log"), exist_ok=True)
     logger.add('./log/sync_resize.log', rotation='10 MB', backtrace=False, catch=True, encoding='utf8')
     logger.info("Started.")
 
