@@ -44,11 +44,11 @@ def resize_image(path: Path, size: tuple[int, int]):
     img.getexif().clear()
     img.thumbnail(size)
     if img.format == "PNG" and img.mode == "RGBA" and path.suffix.lower() in (".jpg", ".jpeg"):
-        background = Image.new('RGB', img.size, (255, 255, 255))
+        background = Image.new("RGB", img.size, (255, 255, 255))
         background.paste(img, mask=img.split()[3])
         background.save(path)
     elif img.format == "GIF" and path.suffix.lower() in (".jpg", ".jpeg"):
-        background = Image.new('RGB', img.size, (255, 255, 255))
+        background = Image.new("RGB", img.size, (255, 255, 255))
         background.paste(img)
         background.save(path)
     else:
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     start_time = time.time()
 
     os.makedirs(os.path.dirname("./log"), exist_ok=True)
-    logger.add('./log/sync_resize.log', rotation='10 MB', backtrace=False, catch=True, encoding='utf8')
+    logger.add("./log/sync_resize.log", rotation="10 MB", backtrace=False, catch=True, encoding="utf8")
     logger.info("Started.")
 
     parser = argparse.ArgumentParser()
