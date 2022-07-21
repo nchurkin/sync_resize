@@ -11,7 +11,6 @@ from PIL import Image, ImageFile, UnidentifiedImageError
 from loguru import logger
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-IMAGE_QUALITY = 80
 PATTERNS = ("*.gif", "*.jpg", "*.jpeg", "*.png", "*.tif", "*.jfif")
 
 
@@ -47,13 +46,13 @@ def resize_image(path: Path, size: tuple[int, int]):
     if img.format == "PNG" and img.mode == "RGBA" and path.suffix.lower() in (".jpg", ".jpeg"):
         background = Image.new('RGB', img.size, (255, 255, 255))
         background.paste(img, mask=img.split()[3])
-        background.save(path, optimize=True, quality=IMAGE_QUALITY)
+        background.save(path)
     elif img.format == "GIF" and path.suffix.lower() in (".jpg", ".jpeg"):
         background = Image.new('RGB', img.size, (255, 255, 255))
         background.paste(img)
-        background.save(path, optimize=True, quality=IMAGE_QUALITY)
+        background.save(path)
     else:
-        img.save(path, optimize=True, quality=IMAGE_QUALITY)
+        img.save(path)
 
 
 @logger.catch()
