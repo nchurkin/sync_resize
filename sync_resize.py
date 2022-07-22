@@ -57,6 +57,7 @@ def resize_image(path: Path, size: tuple[int, int]):
 
 @logger.catch()
 def scan_tree(root: str | os.PathLike, path_rel_to: str | os.PathLike = None) -> Iterable[str]:
+    """Returns list of related file paths for root provided."""
     if path_rel_to is None:
         path_rel_to = root
     for entry in scandir(root):
@@ -68,6 +69,7 @@ def scan_tree(root: str | os.PathLike, path_rel_to: str | os.PathLike = None) ->
 
 
 def filter_tree(paths: Iterable, patterns: Iterable) -> Iterable:
+    """Filter files that match Unix shell-style wildcards pattern."""
     for path in paths:
         if any(fnmatch.fnmatch(path, p) for p in patterns):
             yield path
@@ -76,15 +78,15 @@ def filter_tree(paths: Iterable, patterns: Iterable) -> Iterable:
 @logger.catch()
 def determine_actions(source_files: Iterable[Path], dest_files: Iterable[Path],
                       source_folder: str, dest_folder: str) -> Iterable:
-    for rel_dir in source_files:
-        if rel_dir not in dest_files:
-            source_path = Path(source_folder) / rel_dir
-            dest_path = Path(dest_folder) / rel_dir
+    for rel_path in source_files:
+        if rel_path not in dest_files:
+            source_path = Path(source_folder) / rel_path
+            dest_path = Path(dest_folder) / rel_path
             yield "COPY", source_path, dest_path
 
-    for rel_dir in dest_files:
-        if rel_dir not in source_files:
-            yield "DELETE", dest_folder / rel_dir
+    for rel_path in dest_files:
+        if rel_path not in source_files:
+            yield "DELETE", dest_folder / rel_path
 
 
 if __name__ == '__main__':
